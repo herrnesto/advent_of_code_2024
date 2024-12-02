@@ -7,6 +7,7 @@ defmodule Aoc2024.Days.Day1 do
 
   def solve(day) do
     input = Helpers.read_input(day)
+    dbg input
     part1 = solve_part1(input)
     part2 = solve_part2(input)
     IO.puts("Part 1: #{part1}")
