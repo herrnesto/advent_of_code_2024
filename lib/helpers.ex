@@ -4,4 +4,9 @@ defmodule Aoc2024.Helpers do
     |> File.read!()
     |> String.trim()
   end
+
+  def parse_number(number) do
+    {parsed, _} = Integer.parse(number)
+    parsed
+  end
 end

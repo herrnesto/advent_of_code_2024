@@ -16,7 +16,7 @@ defmodule Mix.Tasks.Aoc.Run do
     end
   end
 
-  defp parse_args([day | rest]) do
+  defp parse_args([day | _rest]) do
     day =
       case Integer.parse(day) do
         {day, ""} when day > 0 -> day
