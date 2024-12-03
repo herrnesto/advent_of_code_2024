@@ -16,10 +16,8 @@ defmodule Aoc2024.Days.DayTemplate do
         [list_a ++ [a], list_b ++ [b]]
       end)
 
-    part1 = solve_part1(input)
-    part2 = solve_part2(input)
-    IO.puts("Part 1: #{part1}")
-    IO.puts("Part 2: #{part2}")
+    IO.puts("Part 1: #{solve_part1(input)}")
+    IO.puts("Part 2: #{solve_part2(input)}")
   end
 
   defp solve_part1(input) do
