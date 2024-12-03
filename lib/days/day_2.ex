@@ -61,7 +61,6 @@ defmodule Aoc2024.Days.Day2 do
     input
     |> Enum.map(&validate_sequence_part_2/1)
     |> Enum.count(fn {unsafe_levels, _, _} -> unsafe_levels - 1 <= 0 end)
-    |> dbg
   end
 
   defp validate_sequence_part_2(sequence) do
