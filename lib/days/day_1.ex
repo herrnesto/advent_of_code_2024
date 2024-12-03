@@ -1,8 +1,4 @@
 defmodule Aoc2024.Days.Day1 do
-  @moduledoc """
-  Solution for Day 1
-  """
-
   alias Aoc2024.Helpers
 
   def solve(day) do
@@ -16,10 +12,9 @@ defmodule Aoc2024.Days.Day1 do
         [list_a ++ [a], list_b ++ [b]]
       end)
 
-    part1 = solve_part1(input)
-    part2 = solve_part2(input)
-    IO.puts("Part 1: #{part1}")
-    IO.puts("Part 2: #{part2}")
+    Helpers.print_title(day)
+    Helpers.print_result("Teil 1", solve_part1(input), :green)
+    Helpers.print_result("Teil 2", solve_part2(input), :blue)
   end
 
   defp solve_part1([list_a, list_b]) do

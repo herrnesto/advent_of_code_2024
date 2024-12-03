@@ -1,5 +1,4 @@
 defmodule Aoc2024.Days.Day2 do
-  require Logger
   alias Aoc2024.Helpers
 
   require Logger
@@ -10,8 +9,9 @@ defmodule Aoc2024.Days.Day2 do
       |> String.split("\n")
       |> Enum.map(&String.split/1)
 
-    IO.puts("Part 1: #{solve_part1(input)}")
-    IO.puts("Part 2: #{solve_part2(input)}")
+    Helpers.print_title(day)
+    Helpers.print_result("Teil 1", solve_part1(input), :green)
+    Helpers.print_result("Teil 2", solve_part2(input), :blue)
   end
 
   defp solve_part1(input) do

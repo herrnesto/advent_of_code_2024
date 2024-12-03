@@ -1,8 +1,4 @@
 defmodule Aoc2024.Days.Day3 do
-  @moduledoc """
-  Solution for Day 1
-  """
-
   alias Aoc2024.Helpers
 
   def solve(day) do
@@ -10,9 +6,9 @@ defmodule Aoc2024.Days.Day3 do
       Helpers.read_input(day)
       |> String.split("\n")
 
-    IO.puts("Day 3:")
-    IO.puts("Part 1: #{solve_part1(input)}")
-    IO.puts("Part 2: #{solve_part2(input)}")
+    Helpers.print_title(day)
+    Helpers.print_result("Teil 1", solve_part1(input), :green)
+    Helpers.print_result("Teil 2", solve_part2(input), :blue)
   end
 
   defp solve_part1(input) do
