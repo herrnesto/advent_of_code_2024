@@ -4,14 +4,14 @@ defmodule Aoc2024.Days.Day4 do
   @searchterm String.graphemes("XMAS")
 
   @directions [
-    # {1, 0},
-    # {-1, 0},
-    # {0, 1},
-    # {0, -1},
-    # {1, 1},
+    {1, 0},
+    {-1, 0},
+    {0, 1},
+    {0, -1},
+    {1, 1},
     {-1, -1},
-    # {1, -1},
-    # {-1, 1}
+    {1, -1},
+    {-1, 1}
   ]
 
   def solve(day) do
@@ -41,11 +41,9 @@ defmodule Aoc2024.Days.Day4 do
               if process_search(input, needle, dir), do: 1, else: 0
             end)
             |> Enum.sum()
-            |> IO.inspect(label: :sum_row)
 
           line_acc + sum
         end)
-        |> IO.inspect(label: :sum_directions)
 
       row_acc + sum
     end)
@@ -59,12 +57,17 @@ defmodule Aoc2024.Days.Day4 do
   defp process_search(_, _, _, index) when index == 4, do: true
 
   defp process_search(matrix, position, direction, index) do
-    IO.inspect {position, direction, index}
-    case match?(matrix, position, Enum.at(@searchterm, index)) do
-      true -> process_search(matrix, shift_position(position, direction), direction, index + 1)
-      false -> false
+    with true <- match?(matrix, position, Enum.at(@searchterm, index)),
+         new_position <- shift_position(position, direction),
+         true <- validate_position(new_position) do
+      process_search(matrix, new_position, direction, index + 1)
+    else
+      _ -> false
     end
   end
+
+  defp validate_position({y, x}) when y >= -1 and x >= -1, do: true
+  defp validate_position(_), do: false
 
   defp shift_position({y, x}, {y_dir, x_dir}) do
     {y + y_dir, x + x_dir}
@@ -73,7 +76,6 @@ defmodule Aoc2024.Days.Day4 do
   defp match?(matrix, {y, x}, search) do
     with row when is_list(row) <- Enum.at(matrix, y),
          letter when is_binary(letter) <- Enum.at(row, x) do
-          IO.inspect {y, x, letter}
       letter == search
     else
       _ -> false
