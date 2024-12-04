@@ -11,13 +11,11 @@ defmodule Aoc2024.Days.DayTemplate do
     Helpers.print_result("Teil 2", solve_part2(input), :blue)
   end
 
-  defp solve_part1(input) do
-    IO.inspect(input)
-    nil
+  defp solve_part1(_) do
+    "___"
   end
 
-  defp solve_part2(input) do
-    IO.inspect(input)
-    nil
+  defp solve_part2(_) do
+    "___"
   end
 end
