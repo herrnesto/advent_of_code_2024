@@ -14,6 +14,7 @@ defmodule Aoc2024.Days.Day4 do
     {-1, 1}
   ]
 
+
   def solve(day) do
     input =
       Helpers.read_input(day)
@@ -49,10 +50,6 @@ defmodule Aoc2024.Days.Day4 do
     end)
   end
 
-  defp solve_part2(_) do
-    "___"
-  end
-
   defp process_search(matrix, position, direction, index \\ 0)
   defp process_search(_, _, _, index) when index == 4, do: true
 
@@ -80,5 +77,30 @@ defmodule Aoc2024.Days.Day4 do
     else
       _ -> false
     end
+  end
+
+
+  defp solve_part2(_) do
+    input
+    |> Enum.with_index()
+    |> Enum.reduce(0, fn {row, row_index}, row_acc ->
+      sum =
+        row
+        |> Enum.with_index()
+        |> Enum.reduce(0, fn {_, line_index}, line_acc ->
+          needle = {row_index, line_index}
+
+          sum =
+            @directions
+            |> Enum.map(fn dir ->
+              if process_search(input, needle, dir), do: 1, else: 0
+            end)
+            |> Enum.sum()
+
+          line_acc + sum
+        end)
+
+      row_acc + sum
+    end)
   end
 end
