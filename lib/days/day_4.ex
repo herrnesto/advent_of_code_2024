@@ -14,7 +14,6 @@ defmodule Aoc2024.Days.Day4 do
     {-1, 1}
   ]
 
-
   def solve(day) do
     input =
       Helpers.read_input(day)
@@ -79,8 +78,7 @@ defmodule Aoc2024.Days.Day4 do
     end
   end
 
-
-  defp solve_part2(_) do
+  defp solve_part2(input) do
     input
     |> Enum.with_index()
     |> Enum.reduce(0, fn {row, row_index}, row_acc ->
