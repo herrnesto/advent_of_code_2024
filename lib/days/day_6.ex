@@ -8,6 +8,9 @@ defmodule Aoc2024.Days.Day6 do
     {0, 1},
     {-1, 0}
   ]
+
+  @directions_count length(@directions)
+
   def solve(day) do
     input =
       Helpers.read_input(day)
@@ -22,7 +25,7 @@ defmodule Aoc2024.Days.Day6 do
     start_position =
       get_start_position(input)
 
-    do_process(start_position, input, 0, 1)
+    explore(start_position, input, MapSet.new(), 0)
   end
 
   defp solve_part2(_) do
@@ -50,7 +53,7 @@ defmodule Aoc2024.Days.Day6 do
   defp get_direction(dir_index), do: Enum.at(@directions, dir_index)
 
   defp change_direction(true, dir_index) do
-    new_index = if dir_index + 1 < Enum.count(@directions), do: dir_index + 1, else: 0
+    new_index = if dir_index + 1 < @directions_count, do: dir_index + 1, else: 0
 
     {true, new_index}
   end
@@ -59,42 +62,60 @@ defmodule Aoc2024.Days.Day6 do
 
   defp change_direction(_, dir_index), do: {false, dir_index}
 
+  defp is_obstacle?({x, y}, _) when x < 0 or y < 0, do: nil
+
   defp is_obstacle?({x, y}, map) do
-    with {:ok, row} <- Enum.fetch(map, y),
-         chars = String.split(row, "", trim: true),
-         {:ok, char} <- Enum.fetch(chars, x) do
-      IO.inspect(char)
+    case Enum.at(map, y) do
+      nil ->
+        nil
 
-      if char == "#" do
-        true
-      else
-        false
+      row ->
+        case String.at(row, x) do
+          "#" -> true
+          nil -> nil
+          _ -> false
+        end
+    end
+  end
+
+  def explore(position, map, travelled_path, dir_index) do
+    travelled_path = MapSet.put(travelled_path, position)
+
+      new_position =
+        position
+        |> move_position(get_direction(dir_index))
+
+      new_position
+      |> is_obstacle?(map)
+      |> change_direction(dir_index)
+      |> case do
+        {true, new_dir_index} ->
+          explore(position, map, travelled_path, new_dir_index)
+
+        nil ->
+          visualize_map(map, travelled_path)
+          end_process(travelled_path)
+
+        _ ->
+          explore(new_position, map, travelled_path, dir_index)
       end
-    else
-      _ -> nil
-    end
   end
 
-  def do_process(position, _, dir_index, 200) do
-    dbg({position, dir_index, 1000})
+  defp end_process(travelled_path), do: Enum.count(travelled_path)
+
+  defp visualize_map(map, travelled_path) do
+    map
+    |> Enum.with_index()
+    |> Enum.map(fn {row, y} ->
+      row
+      |> String.split("", trim: true)
+      |> Enum.with_index()
+      |> Enum.map(fn {char, x} ->
+        if MapSet.member?(travelled_path, {x, y}), do: "X", else: char
+      end)
+      |> Enum.join("")
+    end)
+    |> Enum.join("\n")
+    |> IO.puts()
   end
-
-  def do_process(position, map, dir_index, step) do
-    IO.inspect({position, step}, label: "position")
-
-    new_position =
-      position
-      |> move_position(get_direction(dir_index))
-
-    new_position
-    |> is_obstacle?(map)
-    |> change_direction(dir_index)
-    |> case do
-      {true, new_dir_index} -> do_process(position, map, new_dir_index, step)
-      nil -> end_process(step - 1)
-      _ -> do_process(new_position, map, dir_index, step + 1)
-    end
-  end
-
-  defp end_process(step), do: step
 end
